@@ -33,9 +33,7 @@ namespace ToolTestWishyWishy
             this.rdb_Localhost = new System.Windows.Forms.RadioButton();
             this.rdb_PublicWeb = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rdb_Option_DropHeart = new System.Windows.Forms.RadioButton();
             this.rdb_Option_CreateWish = new System.Windows.Forms.RadioButton();
-            this.rdb_Option_Unlike = new System.Windows.Forms.RadioButton();
             this.rdb_Option_Thank = new System.Windows.Forms.RadioButton();
             this.btn_Start = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -79,7 +77,7 @@ namespace ToolTestWishyWishy
             this.rdb_Localhost.AutoSize = true;
             this.rdb_Localhost.Location = new System.Drawing.Point(128, 19);
             this.rdb_Localhost.Name = "rdb_Localhost";
-            this.rdb_Localhost.Size = new System.Drawing.Size(74, 17);
+            this.rdb_Localhost.Size = new System.Drawing.Size(94, 21);
             this.rdb_Localhost.TabIndex = 1;
             this.rdb_Localhost.Text = "Local host";
             this.rdb_Localhost.UseVisualStyleBackColor = true;
@@ -90,7 +88,7 @@ namespace ToolTestWishyWishy
             this.rdb_PublicWeb.Checked = true;
             this.rdb_PublicWeb.Location = new System.Drawing.Point(22, 19);
             this.rdb_PublicWeb.Name = "rdb_PublicWeb";
-            this.rdb_PublicWeb.Size = new System.Drawing.Size(80, 17);
+            this.rdb_PublicWeb.Size = new System.Drawing.Size(100, 21);
             this.rdb_PublicWeb.TabIndex = 0;
             this.rdb_PublicWeb.TabStop = true;
             this.rdb_PublicWeb.Text = "Public Web";
@@ -98,26 +96,14 @@ namespace ToolTestWishyWishy
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.rdb_Option_DropHeart);
             this.groupBox2.Controls.Add(this.rdb_Option_CreateWish);
-            this.groupBox2.Controls.Add(this.rdb_Option_Unlike);
             this.groupBox2.Controls.Add(this.rdb_Option_Thank);
             this.groupBox2.Location = new System.Drawing.Point(24, 77);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(384, 124);
+            this.groupBox2.Size = new System.Drawing.Size(384, 112);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Chọn công việc";
-            // 
-            // rdb_Option_DropHeart
-            // 
-            this.rdb_Option_DropHeart.AutoSize = true;
-            this.rdb_Option_DropHeart.Location = new System.Drawing.Point(205, 20);
-            this.rdb_Option_DropHeart.Name = "rdb_Option_DropHeart";
-            this.rdb_Option_DropHeart.Size = new System.Drawing.Size(134, 17);
-            this.rdb_Option_DropHeart.TabIndex = 7;
-            this.rdb_Option_DropHeart.Text = "Test chức năng thả tim";
-            this.rdb_Option_DropHeart.UseVisualStyleBackColor = true;
             // 
             // rdb_Option_CreateWish
             // 
@@ -125,28 +111,18 @@ namespace ToolTestWishyWishy
             this.rdb_Option_CreateWish.Checked = true;
             this.rdb_Option_CreateWish.Location = new System.Drawing.Point(22, 19);
             this.rdb_Option_CreateWish.Name = "rdb_Option_CreateWish";
-            this.rdb_Option_CreateWish.Size = new System.Drawing.Size(156, 17);
+            this.rdb_Option_CreateWish.Size = new System.Drawing.Size(201, 21);
             this.rdb_Option_CreateWish.TabIndex = 6;
             this.rdb_Option_CreateWish.TabStop = true;
             this.rdb_Option_CreateWish.Text = "Test chức năng tạo ước mơ";
             this.rdb_Option_CreateWish.UseVisualStyleBackColor = true;
             // 
-            // rdb_Option_Unlike
-            // 
-            this.rdb_Option_Unlike.AutoSize = true;
-            this.rdb_Option_Unlike.Location = new System.Drawing.Point(22, 91);
-            this.rdb_Option_Unlike.Name = "rdb_Option_Unlike";
-            this.rdb_Option_Unlike.Size = new System.Drawing.Size(161, 17);
-            this.rdb_Option_Unlike.TabIndex = 5;
-            this.rdb_Option_Unlike.Text = "Test chức năng không thích";
-            this.rdb_Option_Unlike.UseVisualStyleBackColor = true;
-            // 
             // rdb_Option_Thank
             // 
             this.rdb_Option_Thank.AutoSize = true;
-            this.rdb_Option_Thank.Location = new System.Drawing.Point(22, 56);
+            this.rdb_Option_Thank.Location = new System.Drawing.Point(22, 61);
             this.rdb_Option_Thank.Name = "rdb_Option_Thank";
-            this.rdb_Option_Thank.Size = new System.Drawing.Size(151, 17);
+            this.rdb_Option_Thank.Size = new System.Drawing.Size(195, 21);
             this.rdb_Option_Thank.TabIndex = 4;
             this.rdb_Option_Thank.Text = "Test chức năng lời cảm ơn";
             this.rdb_Option_Thank.UseVisualStyleBackColor = true;
@@ -188,7 +164,7 @@ namespace ToolTestWishyWishy
             0,
             0});
             this.numud_TaskNum.Name = "numud_TaskNum";
-            this.numud_TaskNum.Size = new System.Drawing.Size(60, 20);
+            this.numud_TaskNum.Size = new System.Drawing.Size(60, 22);
             this.numud_TaskNum.TabIndex = 4;
             this.numud_TaskNum.Value = new decimal(new int[] {
             1,
@@ -201,7 +177,7 @@ namespace ToolTestWishyWishy
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(31, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.Size = new System.Drawing.Size(64, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Số luồng";
             // 
@@ -221,7 +197,7 @@ namespace ToolTestWishyWishy
             this.rdb_Sequen.AutoSize = true;
             this.rdb_Sequen.Location = new System.Drawing.Point(126, 19);
             this.rdb_Sequen.Name = "rdb_Sequen";
-            this.rdb_Sequen.Size = new System.Drawing.Size(62, 17);
+            this.rdb_Sequen.Size = new System.Drawing.Size(78, 21);
             this.rdb_Sequen.TabIndex = 3;
             this.rdb_Sequen.Text = "Tuần tự";
             this.rdb_Sequen.UseVisualStyleBackColor = true;
@@ -232,7 +208,7 @@ namespace ToolTestWishyWishy
             this.rdb_Parallel.Checked = true;
             this.rdb_Parallel.Location = new System.Drawing.Point(20, 19);
             this.rdb_Parallel.Name = "rdb_Parallel";
-            this.rdb_Parallel.Size = new System.Drawing.Size(76, 17);
+            this.rdb_Parallel.Size = new System.Drawing.Size(97, 21);
             this.rdb_Parallel.TabIndex = 2;
             this.rdb_Parallel.TabStop = true;
             this.rdb_Parallel.Text = "Song song";
@@ -242,7 +218,7 @@ namespace ToolTestWishyWishy
             // 
             this.groupBox5.Controls.Add(this.numud_WaitTime);
             this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Location = new System.Drawing.Point(438, 153);
+            this.groupBox5.Location = new System.Drawing.Point(438, 141);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(225, 48);
             this.groupBox5.TabIndex = 5;
@@ -264,7 +240,7 @@ namespace ToolTestWishyWishy
             0,
             0});
             this.numud_WaitTime.Name = "numud_WaitTime";
-            this.numud_WaitTime.Size = new System.Drawing.Size(60, 20);
+            this.numud_WaitTime.Size = new System.Drawing.Size(60, 22);
             this.numud_WaitTime.TabIndex = 4;
             this.numud_WaitTime.Value = new decimal(new int[] {
             1,
@@ -277,7 +253,7 @@ namespace ToolTestWishyWishy
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(31, 19);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(42, 13);
+            this.label2.Size = new System.Drawing.Size(55, 17);
             this.label2.TabIndex = 1;
             this.label2.Text = "Số giây";
             // 
@@ -295,6 +271,7 @@ namespace ToolTestWishyWishy
             this.dgv_Noti.Name = "dgv_Noti";
             this.dgv_Noti.ReadOnly = true;
             this.dgv_Noti.RowHeadersVisible = false;
+            this.dgv_Noti.RowHeadersWidth = 51;
             this.dgv_Noti.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dgv_Noti.Size = new System.Drawing.Size(639, 217);
             this.dgv_Noti.TabIndex = 6;
@@ -303,6 +280,7 @@ namespace ToolTestWishyWishy
             // 
             this.Column1.FillWeight = 50F;
             this.Column1.HeaderText = "STT";
+            this.Column1.MinimumWidth = 6;
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -310,18 +288,21 @@ namespace ToolTestWishyWishy
             // Column2
             // 
             this.Column2.HeaderText = "Chức năng test";
+            this.Column2.MinimumWidth = 6;
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "Phân tích lỗi";
+            this.Column4.MinimumWidth = 6;
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "Trạng thái";
+            this.Column3.MinimumWidth = 6;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
             // 
@@ -395,9 +376,7 @@ namespace ToolTestWishyWishy
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.Button btn_Stop;
-        private System.Windows.Forms.RadioButton rdb_Option_DropHeart;
         private System.Windows.Forms.RadioButton rdb_Option_CreateWish;
-        private System.Windows.Forms.RadioButton rdb_Option_Unlike;
         private System.Windows.Forms.RadioButton rdb_Option_Thank;
     }
 }

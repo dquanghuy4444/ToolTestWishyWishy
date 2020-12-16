@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -21,12 +22,13 @@ namespace ToolTestWishyWishy
     public partial class Form1 : Form
     {
         private const string STR_URL_PUBLICWEB = "https://wishywishy.netlify.app/";
-        private const string STR_URL_LOCALHOST = "https://locahost:3000";
-        private const string STR_URL_CREATEWISH = "https://wishywishy.netlify.app/create";
+        private const string STR_URL_LOCALHOST = "http://localhost:3000/";
 
         private const int INT_MAX_AMOUNT_OF_THREADS = 6;
 
         private static string PATH_CREATEWISH = Directory.GetCurrentDirectory() + "\\Excel\\CreateWish.xlsx";
+        private static string PATH_THANK = Directory.GetCurrentDirectory() + "\\Excel\\Thank.xlsx";
+        private static string PATH_DROPHEART = Directory.GetCurrentDirectory() + "\\Excel\\DropHeart.xlsx";
 
         private static ChromeDriver[] arrChrome = new ChromeDriver[INT_MAX_AMOUNT_OF_THREADS];
         private static Thread[] arrThread = new Thread[INT_MAX_AMOUNT_OF_THREADS];
@@ -42,6 +44,8 @@ namespace ToolTestWishyWishy
 
         private static int waitTime = 2000;
         private static List<Wish> wishList = new List<Wish>();
+        private static List<Thank> thankList = new List<Thank>();
+        private static List<int> dropHeartList = new List<int>();
 
         #region "WISH"
         public struct Wish
@@ -59,6 +63,20 @@ namespace ToolTestWishyWishy
                 Facebook = facebook;
                 Context = context;
                 Tag = tag;
+            }
+        }
+        #endregion
+
+        #region "THANK"
+        public struct Thank
+        {
+            public int NumStar;
+            public string Context;
+
+            public Thank(int numStar , string context)
+            {
+                NumStar = numStar;
+                Context = context;
             }
         }
         #endregion
@@ -97,43 +115,50 @@ namespace ToolTestWishyWishy
 
         private void StartChromeInstance(int index)
         {
-
-            ChromeDriver chrome = new ChromeDriver();
-            arrChrome[index] = chrome;
-
-            if (rdb_PublicWeb.Checked)
-                chrome.Url = STR_URL_PUBLICWEB;
-            else
-                chrome.Url = STR_URL_LOCALHOST;
-            chrome.Navigate();
-            //chrome.Manage().Window.Size = new System.Drawing.Size(320, 640);
-            chrome.Manage().Window.Position = new System.Drawing.Point(index * 420, 80);
-
-            if (rdb_Option_CreateWish.Checked)
+            try
             {
-                TestCreateWishInstance(chrome);
-            }
-            else if (rdb_Option_Thank.Checked)
-            {
-                TestThankInstance(chrome);
-            }
-            else if (rdb_Option_DropHeart.Checked)
-            {
-                TestThankInstance(chrome);
-            }
-            else if (rdb_Option_Unlike.Checked)
-            {
-                TestThankInstance(chrome);
-            }
+                ChromeDriver chrome = new ChromeDriver();
+                arrChrome[index] = chrome;
+
+                if (rdb_PublicWeb.Checked)
+                    chrome.Url = STR_URL_PUBLICWEB;
+                else
+                    chrome.Url = STR_URL_LOCALHOST;
+                chrome.Navigate();
+                //chrome.Manage().Window.Size = new System.Drawing.Size(320, 640);
+                chrome.Manage().Window.Position = new System.Drawing.Point(index * 420, 80);
+
+                if (rdb_Option_CreateWish.Checked)
+                {
+                    TestCreateWishInstance(chrome);
+                }
+                else if (rdb_Option_Thank.Checked)
+                {
+                    TestThankInstance(chrome);
+                }
+                //else if (rdb_Option_DropHeart.Checked)
+                //{
+                //    TestDropHeartInstance(chrome);
+                //}
+                //else if (rdb_Option_Unlike.Checked)
+                //{
+                //    TestThankInstance(chrome);
+                //}
 
 
-            Thread.Sleep(waitTime);
-            chrome.Close();
+                Thread.Sleep(waitTime);
+                chrome.Close();
+                chrome.Dispose();
 
-            VisibleButton(true);
-            Thread thr = arrThread[index];
-            thr.Abort();
-            thr = null;
+                VisibleButton(true);
+                Thread thr = arrThread[index];
+                thr.Abort();
+                thr = null;
+            }
+            catch (Exception ex)
+            {
+                //CommonFunc.ShowMessError(ex.ToString());
+            }
         }
 
 
@@ -212,46 +237,89 @@ namespace ToolTestWishyWishy
             else EditRowToDgv(ref row, "Chức năng tạo mới điều ước", "Không có", "Chạy thành công");
         }
 
-        private void TestThankInstance(ChromeDriver chrome)
+        private void TestThankInstance(ChromeDriver chrome )
         {
-            int numStar = 5 - 1;
+            GetThankList();
+            int idx = 0;
+
+            foreach (Thank thank in thankList)
+            {
+                TestThank(chrome, thank, idx);
+                idx++;
+            }
+        }
+
+        private void TestThank(ChromeDriver chrome ,  Thank thank , int idx)
+        {
+            string[] row = new string[] { (idx + 1).ToString(), "Chức năng gửi phản hồi", "Chưa có", "Bắt đầu" };
+            AddRowToDgv(row);
             IWebElement eleTemp = null;
             Thread.Sleep(waitTime);
+            EditRowToDgv(ref row, "Chức năng gửi phản hồi", "Chưa có", "Đang chạy");
             var eleGotoThank = chrome.FindElement(By.XPath("//span[. = 'Lời cảm ơn']"));
             eleGotoThank.Click();
 
-            SetDataForInputElement(chrome, "Nội dung phản hồi", "textarea", "huy dz vcllllllllllllllllllllllllllll");
-            Thread.Sleep(waitTime);
+            if (thank.Context == "")
+            {
+                Thread.Sleep(waitTime);
+                EditRowToDgv(ref row, "Chức năng gửi phản hồi", "Không nhập nội dung phản hồi", "Chạy thất bại");
+                var eleGotoWishes = chrome.FindElement(By.XPath("//span[. = 'Những điều ước']"));
+                eleGotoWishes.Click();
+            }
+            else if (thank.NumStar <= 0)
+            {
+                Thread.Sleep(waitTime);
+                EditRowToDgv(ref row, "Chức năng gửi phản hồi", "Chưa đánh giá sao", "Chạy thất bại");
+                var eleGotoWishes = chrome.FindElement(By.XPath("//span[. = 'Những điều ước']"));
+                eleGotoWishes.Click();
+            }
+            else
+            {
+                Thread.Sleep(waitTime);
+                SetDataForInputElement(chrome, "Nội dung phản hồi", "textarea", thank.Context);
 
-            eleTemp = chrome.FindElement(By.XPath("//span[. = 'Đánh giá']"));
-            eleTemp = eleTemp.FindElement(By.XPath("./.."));
-            //eleTemp = eleTemp.FindElement(By.TagName("div"));
-            var eleTempList = eleTemp.FindElements(By.TagName("button"));
-            eleTempList[numStar].Click();
-            eleTemp = chrome.FindElement(By.XPath("//span[. = 'Gửi phản hồi']"));
-            eleTemp.Click();
-            Thread.Sleep(waitTime);
+                Thread.Sleep(waitTime);
+                Thread.Sleep(waitTime);
+                eleTemp = chrome.FindElement(By.XPath("//span[. = 'Đánh giá']"));
+                eleTemp = eleTemp.FindElement(By.XPath("./.."));
+                //eleTemp = eleTemp.FindElement(By.TagName("div"));
+                var eleTempList = eleTemp.FindElements(By.TagName("button"));
+                eleTempList[thank.NumStar - 1].Click();
+                eleTemp = chrome.FindElement(By.XPath("//span[. = 'Gửi phản hồi']"));
+                eleTemp.Click();
+
+                EditRowToDgv(ref row, "Chức năng gửi phản hồi", "Không có lỗi", "Thành công");
+            }
+
         }
 
         private void TestDropHeartInstance(ChromeDriver chrome)
         {
-            int numStar = 5 - 1;
+            GetDropHeartList();
+            int idx = 0;
+
+            foreach (int id in dropHeartList)
+            {
+                TestDropHeart(chrome, id, idx);
+                idx++;
+            }
+        }
+
+        private void TestDropHeart(ChromeDriver chrome , int id , int idx)
+        {
+            string[] row = new string[] { (idx + 1).ToString(), "Chức năng thả tim", "Chưa có", "Bắt đầu" };
+            AddRowToDgv(row);
             IWebElement eleTemp = null;
             Thread.Sleep(waitTime);
-            var eleGotoThank = chrome.FindElement(By.XPath("//span[. = 'Lời cảm ơn']"));
-            eleGotoThank.Click();
+            EditRowToDgv(ref row, "Chức năng thả tim", "Chưa có", "Đang chạy");
 
-            SetDataForInputElement(chrome, "Nội dung phản hồi", "textarea", "huy dz vcllllllllllllllllllllllllllll");
             Thread.Sleep(waitTime);
+            eleTemp = chrome.FindElement(By.Id("wish_" + id));
+            if (eleTemp == null)
+            {
+                CommonFunc.ShowMessError("123");
+            }
 
-            eleTemp = chrome.FindElement(By.XPath("//span[. = 'Đánh giá']"));
-            eleTemp = eleTemp.FindElement(By.XPath("./.."));
-            //eleTemp = eleTemp.FindElement(By.TagName("div"));
-            var eleTempList = eleTemp.FindElements(By.TagName("button"));
-            eleTempList[numStar].Click();
-            eleTemp = chrome.FindElement(By.XPath("//span[. = 'Gửi phản hồi']"));
-            eleTemp.Click();
-            Thread.Sleep(waitTime);
         }
 
 
@@ -283,7 +351,6 @@ namespace ToolTestWishyWishy
 
             try
             {
-
                 int rowCount = xlRange.Rows.Count;
                 int colCount = xlRange.Columns.Count;
 
@@ -405,6 +472,134 @@ namespace ToolTestWishyWishy
 
             }
         }
+        
+        private void GetThankList()
+        {
+            thankList.Clear();
+
+            string strTemp = "";
+            int intTemp = 0;
+
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(PATH_THANK);
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            try
+            {
+                int rowCount = xlRange.Rows.Count;
+                int colCount = xlRange.Columns.Count;
+
+                for (int i = 2; i <= rowCount; i++)
+                {
+                    Thank thank = new Thank();
+
+                    strTemp = xlRange.Cells[i, 2].Value2.ToString();
+                    int.TryParse(strTemp, out intTemp);
+                    thank.NumStar = intTemp;
+
+                    if (xlRange.Cells[i, 3].Value2 == null)
+                    {
+                        strTemp = "";
+                    }
+                    else
+                    {
+                        strTemp = xlRange.Cells[i, 3].Value2.ToString();
+                    }
+                    thank.Context = strTemp;
+
+                    thankList.Add(thank);
+                }
+
+
+                Marshal.ReleaseComObject(xlApp);
+                //cleanup
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                //rule of thumb for releasing com objects:
+                //  never use two dots, all COM objects must be referenced and released individually
+                //  ex: [somthing].[something].[something] is bad
+
+                //release com objects to fully kill excel process from running in the background
+                Marshal.ReleaseComObject(xlRange);
+                Marshal.ReleaseComObject(xlWorksheet);
+
+                //close and release
+                xlWorkbook.Close();
+                Marshal.ReleaseComObject(xlWorkbook);
+
+                //quit and release
+                //xlApp.Quit();
+
+            }
+            catch (Exception ex)
+            {
+                CommonFunc.ShowMessError(ex.ToString());
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void GetDropHeartList()
+        {
+            dropHeartList.Clear();
+
+            string strTemp = "";
+            int intTemp = 0;
+
+            Excel.Application xlApp = new Excel.Application();
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(PATH_DROPHEART);
+            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+            Excel.Range xlRange = xlWorksheet.UsedRange;
+
+            try
+            {
+                int rowCount = xlRange.Rows.Count;
+                int colCount = xlRange.Columns.Count;
+
+                for (int i = 2; i <= rowCount; i++)
+                {
+
+                    strTemp = xlRange.Cells[i, 2].Value2.ToString();
+                    int.TryParse(strTemp, out intTemp);
+
+                    dropHeartList.Add(intTemp);
+                }
+
+
+                Marshal.ReleaseComObject(xlApp);
+                //cleanup
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+
+                //rule of thumb for releasing com objects:
+                //  never use two dots, all COM objects must be referenced and released individually
+                //  ex: [somthing].[something].[something] is bad
+
+                //release com objects to fully kill excel process from running in the background
+                Marshal.ReleaseComObject(xlRange);
+                Marshal.ReleaseComObject(xlWorksheet);
+
+                //close and release
+                xlWorkbook.Close();
+                Marshal.ReleaseComObject(xlWorkbook);
+
+                //quit and release
+                //xlApp.Quit();
+
+            }
+            catch (Exception ex)
+            {
+                CommonFunc.ShowMessError(ex.ToString());
+            }
+            finally
+            {
+
+            }
+        }
 
         private void VisibleButton(bool isBtnStartVisible)
         {
@@ -445,6 +640,7 @@ namespace ToolTestWishyWishy
                 {
                     ChromeDriver chrome = arrChrome[i];
                     chrome.Close();
+                    chrome.Dispose();
                     Thread thr = arrThread[i];
                     thr.Abort();
                     thr = null;
